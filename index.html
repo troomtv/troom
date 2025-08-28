@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" class="transition duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | TRoom</title>  
+  <!-- Tailwind CSS -->  
+   <script src="https://cdn.tailwindcss.com"></script>  
+   <!-- AOS for animation -->  
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>  
+    <style>
+    .hidden-by-default {
+      display: none;
+    }
+
+    .fade-in {
+      animation: fade 0.5s ease-in;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Enhancements */
+    @media (max-width: 768px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      nav.space-x-6 > a {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1, h2, h3, h4 {
+        font-size: 1.25rem;
+      }
+
+      .text-lg {
+        font-size: 1rem;
+      }
+
+      .py-20, .py-16 {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+    }
+  </style>
+  <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body class="font-sans antialiased text-gray-800 bg-gray-100 dark:bg-gray-900 dark:text-white transition duration-300">
+  <!-- Responsive Navbar with Toggle -->
+<header class="bg-white dark:bg-gray-900 shadow-md transition-colors">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-600 dark:text-white">TRoom</h1>
+
+    <!-- Toggle Buttons (Mobile Only) -->
+    <div class="flex items-center">
+      <!-- Dark Mode Toggle -->
+      <button id="darkToggle" class="mr-4 text-gray-700 dark:text-yellow-400 focus:outline-none text-xl">
+        🌙
+      </button>
+
+      <!-- Nav Toggle (Hamburger) -->
+      <button id="navToggle" class="md:hidden text-gray-700 dark:text-white focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Nav Links (Desktop) -->
+    <nav class="hidden md:flex space-x-6 text-gray-700 dark:text-white">
+      <a href="index.html" class="hover:text-blue-600">Home</a>
+      <a href="about.html" class="hover:text-blue-600">About</a>
+      <a href="livestream.html" class="hover:text-blue-600">Livestream</a>
+      <a href="video.html" class="hover:text-blue-600">Video Hub</a>
+      <a href="zoom.html" class="hover:text-blue-600">Zoom Meeting</a>
+    </nav>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div id="mobileNav" class="md:hidden hidden px-4 pb-4 space-y-2 bg-white dark:bg-gray-900">
+    <a href="index.html" class="block text-gray-700 dark:text-white hover:text-blue-600">Home</a>
+    <a href="about.html" class="block text-gray-700 dark:text-white hover:text-blue-600">About</a>
+    <a href="livestream.html" class="block text-gray-700 dark:text-white hover:text-blue-600">Livestream</a>
+    <a href="video.html" class="block text-gray-700 dark:text-white hover:text-blue-600">Video Hub</a>
+    <a href="zoom.html" class="block text-gray-700 dark:text-white hover:text-blue-600">Zoom Meeting</a>
+  </div>
+</header>
+
+
+  <!-- Hero Section -->
+  <section class="bg-blue-600 text-white py-24 text-center" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold mb-4">Welcome to TRoom</h2>
+      <p class="text-lg mb-6">Developing young men and women into vessels of honor unto God.</p>
+      <a href="about.html" class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Swiper Slider -->
+<div class="swiper mySwiper w-full max-w-5xl mx-auto rounded overflow-hidden shadow-lg">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">
+      <img src="thanksgiving.jpg" class="w-full h-auto" alt="Slide 1" />
+    </div>
+    <div class="swiper-slide">
+      <img src="travis.jpg" class="w-full h-auto" alt="Slide 2" />
+    </div>
+    <div class="swiper-slide">
+      <img src="musicnkby.jpg" class="w-full h-auto" alt="Slide 3" />
+    </div>
+    <!-- Add more slides as needed -->
+  </div>
+
+  <!-- Pagination Dots -->
+  <div class="swiper-pagination"></div>
+
+  <!-- Navigation Buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+
+  <!-- About Section -->
+  <section class="py-16" data-aos="fade-right">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold mb-4">What We Do</h3>
+      <p class="text-lg max-w-2xl mx-auto text-gray-600 dark:text-gray-300">In every young mind, there's a spark—waiting to ignite. A vision. A voice. A future. Teaching Room, popularly known as TRoom proudly partners with the voices that shape young people — to shape character, spiritual life, and capacity. We achieve this by organizing online and in-person conferences and events.</p>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-16 bg-gray-50 dark:bg-gray-800" data-aos="fade-left">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold mb-12">Reference Scriptures</h3>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white dark:bg-gray-700 p-6 shadow rounded-lg hover:scale-105 transition-transform">
+          <h4 class="text-xl font-semibold mb-2">Acts 1:8</h4>
+          <p class="text-gray-600 dark:text-gray-300">But ye shall receive power...</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-6 shadow rounded-lg hover:scale-105 transition-transform">
+          <h4 class="text-xl font-semibold mb-2">Psalms 91:1</h4>
+          <p class="text-gray-600 dark:text-gray-300">He that dwelleth in the secret place...</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-6 shadow rounded-lg hover:scale-105 transition-transform">
+          <h4 class="text-xl font-semibold mb-2">Ecclesiastes 5:19</h4>
+          <p class="text-gray-600 dark:text-gray-300">Also, every man to whom God has given...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section class="bg-white dark:bg-gray-900 py-16" data-aos="fade-up">
+    <div class="container mx-auto px-4 max-w-xl">
+      <h3 class="text-3xl font-bold text-center mb-6">Contact Us</h3>
+      <form id="contact-form" action="https://formspree.io/f/mzzgndnj" method="POST" class="space-y-4">
+  <input 
+    type="text" 
+    name="name" 
+    placeholder="Name"
+    required
+    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+
+  <input 
+    type="email" 
+    name="email" 
+    placeholder="Email"
+    required
+    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+
+  <textarea 
+    name="message" 
+    rows="5" 
+    placeholder="Message"
+    required
+    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  ></textarea>
+
+  <button 
+    type="submit"
+    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+  >
+    Send Message
+  </button>
+</form>
+
+      <div id="thankyou-popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm w-full">
+          <h3 class="text-2xl font-bold text-green-600 mb-4">Thank You!</h3>
+          <p class="text-gray-700">Your message has been sent successfully.</p>
+          <button onclick="closePopup()" class="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Close</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-600 text-white py-8 text-center">
+    <p>&copy; 2025 TRoom. All rights reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+    const form = document.getElementById('contact-form');
+    const popup = document.getElementById('thankyou-popup');
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST', headers: { 'Accept': 'application/json' }, body: formData
+        });
+        if (response.ok) { form.reset(); popup.classList.remove('hidden'); }
+        else { alert('There was a problem submitting your form.'); }
+      } catch (err) {
+        alert('Network error.');
+      }
+    });
+    function closePopup() {
+      popup.classList.add('hidden');
+    }
+  </script>
+  <!-- Floating WhatsApp Button -->
+ <a href="https://wa.me/233555243929" 
+class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-all"
+target="_blank" aria-label="Chat on WhatsApp"> <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"> <path d="M12.004 2.001c-5.5 0-9.998 4.498-9.998 9.999 0 1.768.463 3.45 1.345 4.946L2 22l5.227-1.36a9.963 9.963 0 0 0 4.777 1.218c5.5 0 9.996-4.498 9.996-9.998s-4.496-9.999-9.996-9.999zm0 18.2a8.196 8.196 0 0 1-4.176-1.142l-.299-.18-3.101.807.825-3.025-.195-.31a8.204 8.204 0 0 1-1.28-4.393c0-4.534 3.689-8.222 8.225-8.222s8.222 3.688 8.222 8.222c0 4.535-3.687 8.223-8.222 8.223zm4.465-6.183c-.243-.121-1.435-.708-1.658-.788-.223-.081-.386-.121-.548.121-.163.243-.63.789-.773.952-.142.162-.285.182-.528.061-.243-.122-1.028-.378-1.957-1.206-.723-.644-1.211-1.439-1.352-1.681-.142-.243-.015-.375.106-.496.11-.109.244-.284.366-.426.121-.142.161-.243.243-.405.081-.162.04-.304-.02-.426-.061-.122-.548-1.324-.752-1.814-.198-.48-.399-.416-.548-.425l-.466-.01c-.162 0-.426.06-.65.284s-.854.835-.854 2.036c0 1.201.874 2.362.996 2.525.122.162 1.72 2.626 4.168 3.683.583.252 1.038.402 1.393.514.585.186 1.117.16 1.537.097.469-.07 1.435-.586 1.638-1.15.203-.567.203-1.053.142-1.153-.06-.101-.22-.162-.462-.284z"/> </svg> </a>
+<script>
+  const swiper = new Swiper(".mySwiper", {
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+<script>
+  // Navbar mobile toggle
+  document.getElementById('navToggle').onclick = () => {
+    const mobileNav = document.getElementById('mobileNav');
+    mobileNav.classList.toggle('hidden');
+  };
+
+  // Dark mode toggle
+  const toggleBtn = document.getElementById('darkToggle');
+  const html = document.documentElement;
+
+  // Load mode from localStorage
+  if (localStorage.getItem('theme') === 'dark' || 
+     (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    html.classList.add('dark');
+    toggleBtn.textContent = '☀';
+  } else {
+    html.classList.remove('dark');
+    toggleBtn.textContent = '🌙';
+  }
+
+  // Toggle logic
+  toggleBtn.onclick = () => {
+    html.classList.toggle('dark');
+    const isDark = html.classList.contains('dark');
+    toggleBtn.textContent = isDark ? '☀' : '🌙';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  };
+</script>
+<script>
+  tailwind.config = {
+    darkMode: 'class'
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="transition duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zoom Meeting | TRoom</title>  
+  <!-- Tailwind CSS -->  
+   <script src="https://cdn.tailwindcss.com"></script>  
+   <!-- AOS for animation -->  
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>  
+    <style>
+    .hidden-by-default {
+      display: none;
+    }
+
+    .fade-in {
+      animation: fade 0.5s ease-in;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Enhancements */
+    @media (max-width: 768px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      nav.space-x-6 > a {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1, h2, h3, h4 {
+        font-size: 1.25rem;
+      }
+
+      .text-lg {
+        font-size: 1rem;
+      }
+
+      .py-20, .py-16 {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+    }
+  </style>
+  <!-- Zoom Meeting SDK CSS -->
+  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/3.13.0/css/bootstrap.css" />
+  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/3.13.0/css/react-select.css" />
+</head>
+<body>
+  <div class="left">
+    <div id="zmmtg-root"></div> <!-- Zoom renders here -->
+  </div>
+
+  <!-- Zoom SDK JS -->
+  <script src="https://source.zoom.us/3.13.0/lib/vendor/react.min.js"></script>
+  <script src="https://source.zoom.us/3.13.0/lib/vendor/react-dom.min.js"></script>
+  <script src="https://source.zoom.us/3.13.0/lib/vendor/redux.min.js"></script>
+  <script src="https://source.zoom.us/3.13.0/lib/vendor/redux-thunk.min.js"></script>
+  <script src="https://source.zoom.us/3.13.0/lib/vendor/lodash.min.js"></script>
+  <script src="https://source.zoom.us/zoom-meeting-3.13.0.min.js"></script>
+
+  <script>
+  // 🔹 Replace with your Zoom meeting info
+  const meetingNumber = "74226160975";   // <-- your Meeting ID
+  const password = "TRoom2025";          // <-- your Meeting password
+  const userName = "Website Guest";      // <-- how participants appear
+  const role = 0; // 0 = attendee, 1 = host
+
+  ZoomMtg.preLoadWasm();
+  ZoomMtg.prepareWebSDK();
+
+  async function getSignature() {
+    const res = await fetch("http://localhost:4000/signature", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ meetingNumber, role }),
+    });
+    return res.json();
+  }
+
+  async function joinMeeting() {
+    try {
+      const { signature, sdkKey } = await getSignature();
+
+      ZoomMtg.init({
+        leaveUrl: "https://yourdomain.com/thank-you",
+        success: () => {
+          ZoomMtg.join({
+            signature,
+            sdkKey,
+            meetingNumber,
+            userName,
+            passWord: password,
+            success: () => console.log("✅ Joined Zoom meeting"),
+            error: (err) => console.error("❌ Join error", err),
+          });
+        },
+        error: (err) => console.error("❌ Init error", err),
+      });
+    } catch (err) {
+      console.error("❌ Could not join meeting:", err);
+    }
+  }
+
+  // 🚀 Start meeting
+  joinMeeting();
+
+  // 🔄 Refresh signature every 100 minutes (before the 2-hour expiry)
+  setInterval(() => {
+    console.log("🔄 Refreshing Zoom signature...");
+    joinMeeting();
+  }, 100 * 60 * 1000); // 100 minutes
+</script>
+</body>
+</html>
