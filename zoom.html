@@ -1,65 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="transition duration-300">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
+  <title>Zoom Meeting Integration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zoom Meeting | TRoom</title>  
-  <!-- Tailwind CSS -->  
-   <script src="https://cdn.tailwindcss.com"></script>  
-   <!-- AOS for animation -->  
-    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>  
-    <style>
-    .hidden-by-default {
-      display: none;
-    }
-
-    .fade-in {
-      animation: fade 0.5s ease-in;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Responsive Enhancements */
-    @media (max-width: 768px) {
-      .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-
-      nav.space-x-6 > a {
-        display: block;
-        margin-bottom: 0.5rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1, h2, h3, h4 {
-        font-size: 1.25rem;
-      }
-
-      .text-lg {
-        font-size: 1rem;
-      }
-
-      .py-20, .py-16 {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
-    }
-  </style>
-  <!-- Zoom Meeting SDK CSS -->
-  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/3.13.0/css/bootstrap.css" />
-  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/3.13.0/css/react-select.css" />
-</head>
-<body>
-  <div class="left">
-    <div id="zmmtg-root"></div> <!-- Zoom renders here -->
-  </div>
-
-  <!-- Zoom SDK JS -->
+  <!-- Zoom SDK -->
   <script src="https://source.zoom.us/3.13.0/lib/vendor/react.min.js"></script>
   <script src="https://source.zoom.us/3.13.0/lib/vendor/react-dom.min.js"></script>
   <script src="https://source.zoom.us/3.13.0/lib/vendor/redux.min.js"></script>
@@ -67,58 +12,218 @@
   <script src="https://source.zoom.us/3.13.0/lib/vendor/lodash.min.js"></script>
   <script src="https://source.zoom.us/zoom-meeting-3.13.0.min.js"></script>
 
-  <script>
-  // 🔹 Replace with your Zoom meeting info
-  const meetingNumber = "74226160975";   // <-- your Meeting ID
-  const password = "TRoom2025";          // <-- your Meeting password
-  const userName = "Website Guest";      // <-- how participants appear
-  const role = 0; // 0 = attendee, 1 = host
-
-  ZoomMtg.preLoadWasm();
-  ZoomMtg.prepareWebSDK();
-
-  async function getSignature() {
-    const res = await fetch("https://zoom-backend-h2ab.onrender.com/signature", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ meetingNumber, role }),
-    });
-    return res.json();
-  }
-
-  async function joinMeeting() {
-    try {
-      const { signature, sdkKey } = await getSignature();
-
-      ZoomMtg.init({
-        leaveUrl: "https://yourdomain.com/thank-you",
-        success: () => {
-          ZoomMtg.join({
-            signature,
-            sdkKey,
-            meetingNumber,
-            userName,
-            passWord: password,
-            success: () => console.log("✅ Joined Zoom meeting"),
-            error: (err) => console.error("❌ Join error", err),
-          });
-        },
-        error: (err) => console.error("❌ Init error", err),
-      });
-    } catch (err) {
-      console.error("❌ Could not join meeting:", err);
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 0; }
+    #errorPopup, #renamePopup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
     }
-  }
+    .popup-content {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+    h2 { margin: 0 0 10px; }
+    button {
+      background: #3182ce;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover { background: #2b6cb0; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    #joinForm { margin: 30px auto; }
+    #userNameInput, #newNameInput {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 Join the Zoom Meeting</h1>
 
-  // 🚀 Start meeting
-  joinMeeting();
+  <!-- Error Popup -->
+  <div id="errorPopup">
+    <div class="popup-content">
+      <h2>❌ Connection Failed</h2>
+      <p>We could not connect you to the Zoom meeting.<br>
+         Please refresh the page or try again later.</p>
+      <button onclick="location.reload()">🔄 Refresh Page</button>
+    </div>
+  </div>
 
-  // 🔄 Refresh signature every 100 minutes (before the 2-hour expiry)
-  setInterval(() => {
-    console.log("🔄 Refreshing Zoom signature...");
-    joinMeeting();
-  }, 100 * 60 * 1000); // 100 minutes
-</script>
+  <!-- Rename Popup -->
+  <div id="renamePopup">
+    <div class="popup-content">
+      <h2>✏️ Change Display Name</h2>
+      <input type="text" id="newNameInput" placeholder="Enter new name" />
+      <br>
+      <button onclick="applyNewName()">✅ Update</button>
+      <button onclick="closeRenamePopup()">❌ Cancel</button>
+    </div>
+  </div>
+
+  <!-- Name input form -->
+  <div id="joinForm">
+    <input type="text" id="userNameInput" placeholder="Enter your name" />
+    <button id="joinButton" onclick="joinMeeting()">Join Meeting</button>
+  </div>
+
+  <!-- Rename Button (only visible after join) -->
+  <div id="renameSection" style="display:none; margin-top:20px;">
+    <button onclick="openRenamePopup()">✏️ Change Name</button>
+  </div>
+
+  <script>
+    const SIGNATURE_ENDPOINT = "https://your-backend.onrender.com/signature";
+
+    const MEETING_NUMBER = "74226160975";
+    const MEETING_PASSWORD = "TRoom2025";
+    const USER_EMAIL = "guest@example.com"; 
+    const ROLE = 0; // 0 = attendee
+
+    let currentUserName = "Guest User";
+
+    // Load saved name if available
+    window.onload = () => {
+      const savedName = localStorage.getItem("zoomUserName");
+      if (savedName) {
+        document.getElementById("userNameInput").value = savedName;
+      }
+    };
+
+    function showErrorPopup() {
+      document.getElementById("errorPopup").style.display = "flex";
+    }
+
+    function openRenamePopup() {
+      document.getElementById("renamePopup").style.display = "flex";
+    }
+    function closeRenamePopup() {
+      document.getElementById("renamePopup").style.display = "none";
+    }
+
+    async function applyNewName() {
+      const newName = document.getElementById("newNameInput").value.trim();
+      if (!newName) return;
+
+      try {
+        ZoomMtg.rename({
+          newName,
+          success: () => {
+            console.log("✅ Name changed to", newName);
+            currentUserName = newName;
+            localStorage.setItem("zoomUserName", newName);
+            closeRenamePopup();
+          },
+          error: (err) => {
+            console.error("❌ Rename failed", err);
+          },
+        });
+      } catch (err) {
+        console.error("❌ Rename not supported yet", err);
+      }
+    }
+
+    async function getSignature(meetingNumber, role) {
+      const response = await fetch(SIGNATURE_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ meetingNumber, role }),
+      });
+      if (!response.ok) throw new Error("❌ Failed to fetch signature");
+      return response.json();
+    }
+
+    async function joinMeeting(retry = true) {
+      const inputEl = document.getElementById("userNameInput");
+      currentUserName = inputEl.value.trim() || "Guest User";
+
+      // Save name for next time
+      localStorage.setItem("zoomUserName", currentUserName);
+
+      try {
+        const { signature, sdkKey } = await getSignature(MEETING_NUMBER, ROLE);
+
+        ZoomMtg.setZoomJSLib("https://source.zoom.us/3.13.0/lib", "/av");
+        ZoomMtg.preLoadWasm();
+        ZoomMtg.prepareWebSDK();
+
+        ZoomMtg.init({
+          leaveUrl: "https://yourwebsite.com/thankyou",
+          success: () => {
+            console.log("✅ Zoom SDK initialized");
+            ZoomMtg.join({
+              sdkKey,
+              signature,
+              meetingNumber: MEETING_NUMBER,
+              passWord: MEETING_PASSWORD,
+              userName: currentUserName,
+              userEmail: USER_EMAIL,
+              success: () => {
+                console.log("✅ Joined meeting as", currentUserName);
+                document.getElementById("renameSection").style.display = "block";
+              },
+              error: async (err) => {
+                console.error("❌ Join error:", err);
+                if (retry) {
+                  console.log("🔄 Retrying with new signature...");
+                  await joinMeeting(false);
+                } else {
+                  showErrorPopup();
+                }
+              },
+            });
+          },
+          error: (err) => {
+            console.error("❌ Init error:", err);
+            showErrorPopup();
+          },
+        });
+
+        // 🔄 Auto-refresh signature before expiry (every 110 min)
+        setInterval(async () => {
+          try {
+            console.log("🔄 Refreshing Zoom signature...");
+            const { signature: newSig } = await getSignature(MEETING_NUMBER, ROLE);
+            ZoomMtg.join({
+              sdkKey,
+              signature: newSig,
+              meetingNumber: MEETING_NUMBER,
+              passWord: MEETING_PASSWORD,
+              userName: currentUserName,
+              userEmail: USER_EMAIL,
+              success: () => console.log("✅ Re-joined with new signature"),
+              error: (err) => console.error("❌ Re-join error:", err),
+            });
+          } catch (err) {
+            console.error("❌ Failed to refresh signature", err);
+          }
+        }, 110 * 60 * 1000);
+
+      } catch (err) {
+        console.error("❌ Could not join meeting:", err);
+        showErrorPopup();
+      }
+    }
+  </script>
 </body>
 </html>
-
